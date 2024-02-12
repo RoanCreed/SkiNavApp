@@ -70,7 +70,7 @@ def CalculateTotalDistance(path, graph):
             return None
     
     return totalDistance
-
+#here is a new comment
 
 if __name__ == "__main__":
     # Example graph representation
