@@ -84,7 +84,7 @@ if __name__ == "__main__":
     
     # Heuristic function (Euclidean distance)
     def Heuristic(node1, node2):
-        return 0  #Placeholder for future heuristic calculation
+        return 0  
     
     start_node = 'A'
     end_node = 'E'
