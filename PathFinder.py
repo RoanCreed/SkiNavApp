@@ -66,7 +66,7 @@ def CalculateTotalDistance(path, graph):
         if nextNode in graph[currentNode]:
             totalDistance += graph[currentNode][nextNode]['length']
         else:
-            print(f"Warning: No direct edge between {currentNode} and {nextNode}.")
+            print(f"No direct edge between {currentNode} and {nextNode}.")
             return None
     
     return totalDistance
