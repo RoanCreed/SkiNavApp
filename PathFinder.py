@@ -82,7 +82,7 @@ if __name__ == "__main__":
         'E': {'D': {'length': 2, 'difficulty': 'hard'}}
     }
     
-    # Heuristic function (Euclidean distance)
+    #Heuristic function
     def Heuristic(node1, node2):
         return 0  
     
