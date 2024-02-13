@@ -1,5 +1,5 @@
 import heapq as heap
-
+from itertools import permutations
 
 def ReconstructShortestPath(currentNode, predecessors, start):
     path = []
@@ -72,26 +72,92 @@ def CalculateTotalDistance(path, graph):
     return totalDistance
 #here is a new comment
 
+
+def GetAllPermutations(nodes):
+    allPermutations = list(permutations(nodes))
+    return allPermutations
+
 if __name__ == "__main__":
     # Example graph representation
     graph = {
-        'A': {'B': {'length': 1, 'difficulty': 'easy'}, 'C': {'length': 4, 'difficulty': 'medium'}},
-        'B': {'A': {'length': 1, 'difficulty': 'easy'}, 'C': {'length': 2, 'difficulty': 'medium'}, 'D': {'length': 5, 'difficulty': 'hard'}, 'E': {'length': 10, 'difficulty': 'hard'}},
-        'C': {'A': {'length': 4, 'difficulty': 'medium'}, 'B': {'length': 2, 'difficulty': 'easy'}, 'D': {'length': 1, 'difficulty': 'hard'}},
-        'D': {'B': {'length': 5, 'difficulty': 'hard'}, 'C': {'length': 1, 'difficulty': 'easy'}, 'E': {'length': 10, 'difficulty': 'easy'}},
-        'E': {'D': {'length': 2, 'difficulty': 'hard'}}
+        'A': {'B': {'length': 1, 'difficulty': 'easy'}, 'C': {'length': 4, 'difficulty': 'easy'}},
+        'B': {'A': {'length': 1, 'difficulty': 'easy'}, 'C': {'length': 2, 'difficulty': 'easy'}, 'D': {'length': 5, 'difficulty': 'easy'}, 'E': {'length': 10, 'difficulty': 'easy'}},
+        'C': {'A': {'length': 4, 'difficulty': 'easy'}, 'B': {'length': 2, 'difficulty': 'easy'}, 'D': {'length': 1, 'difficulty': 'easy'}},
+        'D': {'B': {'length': 5, 'difficulty': 'easy'}, 'C': {'length': 1, 'difficulty': 'easy'}, 'E': {'length': 10, 'difficulty': 'easy'}},
+        'E': {'D': {'length': 2, 'difficulty': 'easy'}}
     }
     
     #Heuristic function, for future
     def Heuristic(node1, node2):
         return 0  
     
-    start_node = 'A'
-    end_node = 'E'
     
-    shortest_path = AStar(graph, start_node, end_node, Heuristic)
-    print("Shortest Path:", shortest_path)
-    if shortest_path is not None:
-        distance = CalculateTotalDistance(shortest_path, graph)
     
-        print("Distance:", distance)
+    #start_node = 'A'
+    #end_node = 'E'
+    
+    nodes = ['A', 'B', 'E', 'D']
+    allPermutations = GetAllPermutations(nodes)
+
+    shortestPathList = []
+
+    shortestDisPathForEachPermDict = {}
+    shortestPathListForEachPermList =[]
+    
+
+    for p in allPermutations:
+        total_distance = 0
+        total_path = []
+        #print("--------------New perm_______________")
+        #print("-----",p,"------")
+        
+        for i in range(len(p) - 1):
+            pair = (p[i], p[i + 1])
+            #print(pair)
+
+            shortestDistancePathForCurrentPermutationDict = {}
+
+            start_node, end_node = pair
+
+            shortestPathForCurrentPermutation = AStar(graph, start_node, end_node, Heuristic)
+            if shortestPathForCurrentPermutation is not None:
+                distance = CalculateTotalDistance(shortestPathForCurrentPermutation, graph)
+
+                shortestDistancePathForCurrentPermutationDict = {'distance': distance, 'path': shortestPathForCurrentPermutation}
+                shortestPathList.append(shortestDistancePathForCurrentPermutationDict)
+
+                total_distance += distance
+                total_path.append(shortestPathForCurrentPermutation)
+
+                #print(distance,shortestPathForCurrentPermutation)
+
+
+
+    
+        # Construct the dictionary
+        shortestDisPathForEachPermDict = {'distance': total_distance, 'path': total_path} #this not the path but the permutation, the path must concatinate all the paths from each pair
+        shortestPathListForEachPermList.append(shortestDisPathForEachPermDict)
+
+        print("Total Distance: ", total_distance, "| Total Path: ", total_path)
+
+    for key, value in shortestDisPathForEachPermDict.items():
+        print(key, ":", value)
+
+# Initialize with a large value
+min_distance = float('inf')
+min_path = None
+
+# Iterate through each dictionary in the list
+for shortestDisPathForEachPermDict in shortestPathListForEachPermList:
+    # Get distance and path from the current dictionary
+    distance = shortestDisPathForEachPermDict['distance']
+    path = shortestDisPathForEachPermDict['path']
+
+    # Compare distance with the current minimum distance
+    if distance < min_distance:
+        min_distance = distance  # Update minimum distance
+        min_path = path  # Update path
+
+# Print the smallest distance and corresponding path
+print("Smallest distance:", min_distance)
+print("Corresponding path:", min_path)
