@@ -104,6 +104,7 @@ if __name__ == "__main__":
     shortestPathListForEachPermList =[]
     
 
+
     for p in allPermutations:
         total_distance = 0
         total_path = []
@@ -158,3 +159,4 @@ for shortestDisPathForEachPermDict in shortestPathListForEachPermList:
 
 print("Smallest distance:", min_distance)
 print("Corresponding path:", min_path)
+
