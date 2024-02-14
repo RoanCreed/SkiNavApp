@@ -1,6 +1,16 @@
 import PathFinder
 
 
+def FindStartandEndNodes(runName):
+    startNode, endNode = ''
+
+
+
+
+    return startNode, endNode
+
+
+
 if __name__ == "__main__":
 
     # graph = {
@@ -12,7 +22,7 @@ if __name__ == "__main__":
     # }
 
 
-    graph = {
+    nodeGraph = {
         'A': {'B': {'length': 3, 'difficulty': 'medium'}, 'E': {'length': 3, 'difficulty': 'easy'}, 'F': {'length': 5, 'difficulty': 'medium'}},
         'B': {'C': {'length': 5, 'difficulty': 'medium'}, 'L': {'length': 7, 'difficulty': 'medium'}},
         'C': {'D': {'length': 5, 'difficulty': 'medium'}},
@@ -41,14 +51,58 @@ if __name__ == "__main__":
         'Z': {'V': {'length': 3, 'difficulty': 'easy'}},
         'AA': {'A': {'length': 26, 'difficulty': 'easy'}}
     }
+
+
+    #WITHOUT DIFFICULTY MULTIPLYERS ADDED
+    #NODE ARE IN ORDER OF DOWNHILL
+    defaultRuns = {
+    'Beranger': {'nodes': {'A','F','D','G','I','R'},'totalRunLength': 24 },
+    'Lac Blanc': {'nodes': {'A','B','C','D'},'totalRunLength': 13 },
+    'Tete Ronde': {'nodes': {'A','E','W','S'},'totalRunLength': 24 },
+    'Vires': {'nodes': {'B','L'},'totalRunLength': 7 },
+    'Croissant': {'nodes': {'L','M','N'},'totalRunLength': 13 },
+    'Corniche': {'nodes': {'N','J'},'totalRunLength': 5 },
+    'Boulevard Lauzes': {'nodes': {'D','H'},'totalRunLength': 7 },
+    'Trolles': {'nodes': {'P','G'},'totalRunLength': 2 },
+    'Ardoises': {'nodes': {'G','H'},'totalRunLength': 3 },
+    'Adrien Theaux': {'nodes': {'O','P','Q'},'totalRunLength': 3 },
+    'BlackOQ': {'nodes': {'O','Q'},'totalRunLength': 9 },
+    'Roc': {'nodes': {'R','J','K'},'totalRunLength': 4 },
+    'Dalles': {'nodes': {'H','S','T','U','V'},'totalRunLength': 11 },
+    'Christine': {'nodes': {'W','X'},'totalRunLength': 17 },
+    '2 Combes': {'nodes': {'S','X'},'totalRunLength': 6 },
+    'Combes de Thorens': {'nodes': {'X','Y','Z','V','K'},'totalRunLength': 12 },
+    'RedLC': {'nodes': {'L','C'},'totalRunLength': 2 },
+    'RedEF': {'nodes': {'E','F'},'totalRunLength': 6 },
+    'BlueTR': {'nodes': {'T','R'},'totalRunLength': 4 },
+    'GreenUJ': {'nodes': {'U','J'},'totalRunLength': 4 }
+    }
+
+
+
+
     
-    #Heuristic function, for future*********
-    def Heuristic(node1, node2):
-        return 0  
-    
-    startingPointNode = ['X']
-    nodesToVisit = ['Y','Z','V','K']
-    allPermutations = PathFinder.GetAllPermutations(nodesToVisit)
+    startingPointNode = ['K']
+
+    runsInput = ['Beranger','Christine','Croissant']
+
+    #nodesInput = ['R', 'Y', 'O','Q']
+    #allPermutations = PathFinder.GetAllPermutations(nodesInput)
+
+    for run in runsInput:
+        print(run)
+
+    for runName, runNodes in defaultRuns.items():
+        print(runNodes)
+        runStartNode = runNodes[0]  
+        runEndNode = runNodes[-1]   
+        print(f"Run: {runName}, Start Node: {runStartNode}, End Node: {runEndNode}")
+
+
+
+
+
+    allPermutations = PathFinder.GetAllPermutations(runsInput)
 
     allPermutationsWithStartingNode = []
 
@@ -58,7 +112,6 @@ if __name__ == "__main__":
         #print(permWithStartingNode)
 
     shortestPathList = []
-
     shortestDisPathForEachPermDict = {}
     shortestPathListForEachPermList =[]
     
@@ -81,12 +134,12 @@ if __name__ == "__main__":
 
             #print("IN")
             #print(pair)
-            shortestPathForCurrentPermutation = PathFinder.AStar(graph, start_node, end_node)
+            shortestPathForCurrentPermutation = PathFinder.AStar(nodeGraph, start_node, end_node)
             #print(shortestPathForCurrentPermutation)
             #print("OUT")
 
             if shortestPathForCurrentPermutation is not None:
-                distance = PathFinder.CalculateTotalDistance(shortestPathForCurrentPermutation, graph) #Calculates path distance for current pair in permutation
+                distance = PathFinder.CalculateTotalDistance(shortestPathForCurrentPermutation, nodeGraph) #Calculates path distance for current pair in permutation
 
                 shortestDistancePathForCurrentPermutationDict = {'distance': distance, 'path': shortestPathForCurrentPermutation}
                 shortestPathList.append(shortestDistancePathForCurrentPermutationDict)

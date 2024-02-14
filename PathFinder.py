@@ -10,13 +10,13 @@ def ReconstructShortestPath(currentNode, predecessors, start):
 
     return path
 
-def AStar(graph, start, end, Heuristic):
+def AStar(graph, start, end):
     # Init starting distances (infinite)
     distances = {node: float('inf') for node in graph}
     distances[start] = 0
 
     #priority queue - stores nodes with current distances known
-    pq = [(Heuristic(start, end), 0, start)]  # Tuple: (total_cost, current_cost, node)
+    pq = [(0, 0, start)]  # Tuple: (total_cost, current_cost, node)
 
     #Dictionary that stores predecessors of each node
     predecessors = {}
@@ -51,7 +51,7 @@ def AStar(graph, start, end, Heuristic):
                 distances[neighbouringNode] = distance  # Update the distance to the neighbouring node
                 predecessors[neighbouringNode] = currentNode  # Update the predecessor node of the neighbouring node
                 # Push the neighbouring node into the priority queue with updated distance
-                heap.heappush(pq, (distance + Heuristic(neighbouringNode, end), distance, neighbouringNode))
+                heap.heappush(pq, (distance , distance, neighbouringNode))
 
             
     #If destination is unreachable
