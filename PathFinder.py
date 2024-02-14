@@ -39,11 +39,11 @@ def AStar(graph, start, end, Heuristic):
 
             #Adjust for difficulty
             if difficulty == 'easy':
-                length *= 0.5  
-            elif difficulty == 'medium':
                 length *= 1.0  
+            elif difficulty == 'medium':
+                length *= 1.2  
             elif difficulty == 'hard':
-                length *= 2.0  
+                length *= 1.3  
 
             distance = current_cost + length
 
@@ -82,12 +82,43 @@ def GetAllPermutations(nodes):
 
 if __name__ == "__main__":
 
+    # graph = {
+    #     'A': {'B': {'length': 1, 'difficulty': 'easy'}, 'C': {'length': 4, 'difficulty': 'easy'}},
+    #     'B': {'A': {'length': 1, 'difficulty': 'easy'}, 'C': {'length': 2, 'difficulty': 'easy'}, 'D': {'length': 5, 'difficulty': 'easy'}, 'E': {'length': 10, 'difficulty': 'easy'}},
+    #     'C': {'A': {'length': 4, 'difficulty': 'easy'}, 'B': {'length': 2, 'difficulty': 'easy'}, 'D': {'length': 1, 'difficulty': 'easy'}},
+    #     'D': {'B': {'length': 5, 'difficulty': 'easy'}, 'C': {'length': 1, 'difficulty': 'easy'}, 'E': {'length': 10, 'difficulty': 'easy'}},
+    #     'E': {'D': {'length': 2, 'difficulty': 'easy'}}
+    # }
+
+
     graph = {
-        'A': {'B': {'length': 1, 'difficulty': 'easy'}, 'C': {'length': 4, 'difficulty': 'easy'}},
-        'B': {'A': {'length': 1, 'difficulty': 'easy'}, 'C': {'length': 2, 'difficulty': 'easy'}, 'D': {'length': 5, 'difficulty': 'easy'}, 'E': {'length': 10, 'difficulty': 'easy'}},
-        'C': {'A': {'length': 4, 'difficulty': 'easy'}, 'B': {'length': 2, 'difficulty': 'easy'}, 'D': {'length': 1, 'difficulty': 'easy'}},
-        'D': {'B': {'length': 5, 'difficulty': 'easy'}, 'C': {'length': 1, 'difficulty': 'easy'}, 'E': {'length': 10, 'difficulty': 'easy'}},
-        'E': {'D': {'length': 2, 'difficulty': 'easy'}}
+        'A': {'B': {'length': 3, 'difficulty': 'medium'}, 'E': {'length': 3, 'difficulty': 'easy'}, 'F': {'length': 5, 'difficulty': 'medium'}},
+        'B': {'C': {'length': 5, 'difficulty': 'medium'}, 'L': {'length': 7, 'difficulty': 'medium'}},
+        'C': {'D': {'length': 5, 'difficulty': 'medium'}},
+        'D': {'G': {'length': 6, 'difficulty': 'medium'}, 'H': {'length': 1, 'difficulty': 'medium'}},
+        'E': {'F': {'length': 6, 'difficulty': 'medium'}},
+        'F': {'D': {'length': 6, 'difficulty': 'medium'}},
+        'G': {'H': {'length': 3, 'difficulty': 'medium'}, 'I': {'length': 4, 'difficulty': 'medium'}},
+        'H': {'S': {'length': 5, 'difficulty': 'easy'}},
+        'I': {'R': {'length': 3, 'difficulty': 'medium'}},
+        'J': {'K': {'length': 2, 'difficulty': 'easy'}},
+        'K': {'AA': {'length': 4, 'difficulty': 'easy'}, 'L': {'length': 17, 'difficulty': 'easy'}},
+        'L': {'C': {'length': 2, 'difficulty': 'medium'}, 'M': {'length': 3, 'difficulty': 'medium'}},
+        'M': {'O': {'length': 3, 'difficulty': 'medium'}, 'N': {'length': 10, 'difficulty': 'medium'}},
+        'N': {'J': {'length': 5, 'difficulty': 'easy'}},
+        'O': {'P': {'length': 3, 'difficulty': 'medium'}, 'Q': {'length': 9, 'difficulty': 'hard'}},
+        'P': {'I': {'length': 4, 'difficulty': 'medium'}, 'G': {'length': 2, 'difficulty': 'medium'}},
+        'Q': {'J': {'length': 3, 'difficulty': 'medium'}},
+        'R': {'J': {'length': 2, 'difficulty': 'easy'}},
+        'S': {'T': {'length': 3, 'difficulty': 'easy'}, 'X': {'length': 6, 'difficulty': 'easy'}},
+        'T': {'R': {'length': 4, 'difficulty': 'easy'}, 'U': {'length': 2, 'difficulty': 'easy'}},
+        'U': {'V': {'length': 1, 'difficulty': 'easy'}, 'J': {'length': 3, 'difficulty': 'easy'}},
+        'V': {'K': {'length': 2, 'difficulty': 'medium'}},
+        'W': {'S': {'length': 15, 'difficulty': 'easy'}, 'X': {'length': 17, 'difficulty': 'medium'}},
+        'X': {'Y': {'length': 3, 'difficulty': 'easy'}},
+        'Y': {'Z': {'length': 4, 'difficulty': 'easy'}},
+        'Z': {'V': {'length': 3, 'difficulty': 'easy'}},
+        'AA': {'A': {'length': 26, 'difficulty': 'easy'}}
     }
     
     #Heuristic function, for future*********
@@ -95,7 +126,7 @@ if __name__ == "__main__":
         return 0  
     
     
-    nodes = ['A', 'B', 'E', 'D']
+    nodes = ['R', 'W', 'N', 'C']
     allPermutations = GetAllPermutations(nodes)
 
     shortestPathList = []
@@ -108,18 +139,19 @@ if __name__ == "__main__":
     for p in allPermutations:
         total_distance = 0
         total_path = []
-        #print("--------------New perm_______________")
-        #print("-----",p,"------")
+        print("--------------New perm_______________")
+        print("-----",p,"------")
         
         for i in range(len(p) - 1):
             pair = (p[i], p[i + 1])
-            #print(pair)
+            print(pair)
 
             shortestDistancePathForCurrentPermutationDict = {}
 
             start_node, end_node = pair #Assigns the start and end node to the new pair
 
             shortestPathForCurrentPermutation = AStar(graph, start_node, end_node, Heuristic)
+
             if shortestPathForCurrentPermutation is not None:
                 distance = CalculateTotalDistance(shortestPathForCurrentPermutation, graph) #Calculates path distance for current pair in permutation
 
