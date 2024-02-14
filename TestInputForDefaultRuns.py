@@ -12,6 +12,13 @@ def GetSelectedSkiRuns(runsInput):
     return selectedDefaultSkiRuns
 
 
+def GetStartEndPairs(selectedDefaultSkiRuns):
+    startEndPairs = []
+    for run in selectedDefaultSkiRuns:
+        
+
+
+
 if __name__ == "__main__":
 
     # graph = {
@@ -90,9 +97,9 @@ if __name__ == "__main__":
 
     selectedDefaultSkiRuns = []
 
+    selectedDefaultSkiRuns = GetSelectedSkiRuns(runsInput)
 
-
-    
+    selectedDefaultSkiRunsStartEndPairs = GetStartEndPairs(selectedDefaultSkiRuns)
 
 
 
