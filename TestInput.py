@@ -47,7 +47,7 @@ if __name__ == "__main__":
         return 0  
     
     startingPointNode = ['X']
-    nodesToVisit = ['Y','Z','V','K']
+    nodesToVisit = ['H','P','D','N']
     allPermutations = PathFinder.GetAllPermutations(nodesToVisit)
 
     allPermutationsWithStartingNode = []

@@ -1,14 +1,15 @@
 import PathFinder
 
 
-def FindStartandEndNodes(runName):
-    startNode, endNode = ''
+def GetSelectedSkiRuns(runsInput):
+    selectedDefaultSkiRuns = []
+    for runName in runsInput:
+        #print(runName)
+        if runName in defaultRuns:
+            selectedDefaultSkiRuns.append({runName: defaultRuns[runName]})
+            print({runName: defaultRuns[runName]})
 
-
-
-
-    return startNode, endNode
-
+    return selectedDefaultSkiRuns
 
 
 if __name__ == "__main__":
@@ -79,8 +80,6 @@ if __name__ == "__main__":
     }
 
 
-
-
     
     startingPointNode = ['K']
 
@@ -89,14 +88,20 @@ if __name__ == "__main__":
     #nodesInput = ['R', 'Y', 'O','Q']
     #allPermutations = PathFinder.GetAllPermutations(nodesInput)
 
-    for run in runsInput:
-        print(run)
+    selectedDefaultSkiRuns = []
 
-    for runName, runNodes in defaultRuns.items():
-        print(runNodes)
-        runStartNode = runNodes[0]  
-        runEndNode = runNodes[-1]   
-        print(f"Run: {runName}, Start Node: {runStartNode}, End Node: {runEndNode}")
+
+
+    
+
+
+
+
+    # for runName, runNodes in defaultRuns.items():
+    #     print(runNodes)
+    #     runStartNode = runNodes[0]  
+    #     runEndNode = runNodes[-1]   
+    #     print(f"Run: {runName}, Start Node: {runStartNode}, End Node: {runEndNode}")
 
 
 
