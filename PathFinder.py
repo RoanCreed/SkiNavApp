@@ -96,7 +96,7 @@ if __name__ == "__main__":
         'B': {'C': {'length': 5, 'difficulty': 'medium'}, 'L': {'length': 7, 'difficulty': 'medium'}},
         'C': {'D': {'length': 5, 'difficulty': 'medium'}},
         'D': {'G': {'length': 6, 'difficulty': 'medium'}, 'H': {'length': 1, 'difficulty': 'medium'}},
-        'E': {'F': {'length': 6, 'difficulty': 'medium'}},
+        'E': {'F': {'length': 6, 'difficulty': 'medium'}, 'W': {'length': 6, 'difficulty': 'easy'}},
         'F': {'D': {'length': 6, 'difficulty': 'medium'}},
         'G': {'H': {'length': 3, 'difficulty': 'medium'}, 'I': {'length': 4, 'difficulty': 'medium'}},
         'H': {'S': {'length': 5, 'difficulty': 'easy'}},
@@ -125,18 +125,26 @@ if __name__ == "__main__":
     def Heuristic(node1, node2):
         return 0  
     
-    
-    nodes = ['R', 'W', 'N', 'C']
+    startingPointNode = ['K']
+    nodes = ['R', 'W', 'N']
     allPermutations = GetAllPermutations(nodes)
+
+    allPermutationsWithStartingNode = []
+
+    for p in allPermutations:
+        permWithStartingNode = startingPointNode + list(p)
+        allPermutationsWithStartingNode.append(permWithStartingNode)
+        print(permWithStartingNode)
 
     shortestPathList = []
 
     shortestDisPathForEachPermDict = {}
     shortestPathListForEachPermList =[]
     
+    
 
+    for p in allPermutationsWithStartingNode:
 
-    for p in allPermutations:
         total_distance = 0
         total_path = []
         print("--------------New perm_______________")
@@ -144,13 +152,17 @@ if __name__ == "__main__":
         
         for i in range(len(p) - 1):
             pair = (p[i], p[i + 1])
-            print(pair)
+            
 
             shortestDistancePathForCurrentPermutationDict = {}
 
             start_node, end_node = pair #Assigns the start and end node to the new pair
 
+            print("IN")
+            print(pair)
             shortestPathForCurrentPermutation = AStar(graph, start_node, end_node, Heuristic)
+            print(shortestPathForCurrentPermutation)
+            print("OUT")
 
             if shortestPathForCurrentPermutation is not None:
                 distance = CalculateTotalDistance(shortestPathForCurrentPermutation, graph) #Calculates path distance for current pair in permutation
