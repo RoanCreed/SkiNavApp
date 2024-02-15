@@ -41,9 +41,9 @@ def AStar(graph, start, end):
             if difficulty == 'easy':
                 length *= 1.0  
             elif difficulty == 'medium':
-                length *= 1.2  
+                length *= 1.0  
             elif difficulty == 'hard':
-                length *= 1.3  
+                length *= 1.0  
 
             distance = current_cost + length
 

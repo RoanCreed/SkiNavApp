@@ -1,7 +1,7 @@
 import PathFinder
 
 
-def GetSelectedSkiRuns(runsInput):
+def GetSelectedSkiRuns(runsInput, defaultRuns):  #Loops through list of selected runs and takes their information from the dictionary
     selectedDefaultSkiRuns = []
     for runName in runsInput:
         #print(runName)
@@ -13,9 +13,31 @@ def GetSelectedSkiRuns(runsInput):
 
 
 def GetStartEndPairs(selectedDefaultSkiRuns):
-    startEndPairs = []
-    for run in selectedDefaultSkiRuns:
+    startEndPairsList = []
+    for run in selectedDefaultSkiRuns:  #loop each run inside the selected runs list
+        runName = next(iter(run))   #Takes the first key in the dictionary and asigns it to key 'runName' ('Croissant')
+        runDict = run[runName]      #Uses the run name to extract the internal dictionary for that run (nodes and length)
+
+        nodesList = list(runDict['nodes'])    #Get nodes from each inner dictionary in each run list entry
+
+        startNode = nodesList[0]
+        endNode = nodesList[-1]
+        startEndPairs = [startNode, endNode]
+
+        #print(startEndPairs)
+        startEndPairsList.append(startEndPairs)
         
+    return startEndPairsList
+
+
+def AppendStartNodeToPermutations(permutations, startingNode):
+    AppendedPermutationsList = []
+    for permutation in permutations:
+        sumPerms = sum(permutation, [])
+        sumPerms.insert(0,startingNode)
+        AppendedPermutationsList.append(sumPerms)
+
+    return AppendedPermutationsList
 
 
 
@@ -64,117 +86,113 @@ if __name__ == "__main__":
     #WITHOUT DIFFICULTY MULTIPLYERS ADDED
     #NODE ARE IN ORDER OF DOWNHILL
     defaultRuns = {
-    'Beranger': {'nodes': {'A','F','D','G','I','R'},'totalRunLength': 24 },
-    'Lac Blanc': {'nodes': {'A','B','C','D'},'totalRunLength': 13 },
-    'Tete Ronde': {'nodes': {'A','E','W','S'},'totalRunLength': 24 },
-    'Vires': {'nodes': {'B','L'},'totalRunLength': 7 },
-    'Croissant': {'nodes': {'L','M','N'},'totalRunLength': 13 },
-    'Corniche': {'nodes': {'N','J'},'totalRunLength': 5 },
-    'Boulevard Lauzes': {'nodes': {'D','H'},'totalRunLength': 7 },
-    'Trolles': {'nodes': {'P','G'},'totalRunLength': 2 },
-    'Ardoises': {'nodes': {'G','H'},'totalRunLength': 3 },
-    'Adrien Theaux': {'nodes': {'O','P','Q'},'totalRunLength': 3 },
-    'BlackOQ': {'nodes': {'O','Q'},'totalRunLength': 9 },
-    'Roc': {'nodes': {'R','J','K'},'totalRunLength': 4 },
-    'Dalles': {'nodes': {'H','S','T','U','V'},'totalRunLength': 11 },
-    'Christine': {'nodes': {'W','X'},'totalRunLength': 17 },
-    '2 Combes': {'nodes': {'S','X'},'totalRunLength': 6 },
-    'Combes de Thorens': {'nodes': {'X','Y','Z','V','K'},'totalRunLength': 12 },
-    'RedLC': {'nodes': {'L','C'},'totalRunLength': 2 },
-    'RedEF': {'nodes': {'E','F'},'totalRunLength': 6 },
-    'BlueTR': {'nodes': {'T','R'},'totalRunLength': 4 },
-    'GreenUJ': {'nodes': {'U','J'},'totalRunLength': 4 }
+    'Beranger': {'nodes': ['A', 'F', 'D', 'G', 'I', 'R'], 'totalRunLength': 24},
+    'Lac Blanc': {'nodes': ['A', 'B', 'C', 'D'], 'totalRunLength': 13},
+    'Tete Ronde': {'nodes': ['A', 'E', 'W', 'S'], 'totalRunLength': 24},
+    'Vires': {'nodes': ['B', 'L'], 'totalRunLength': 7},
+    'Croissant': {'nodes': ['L', 'M', 'N'], 'totalRunLength': 13},
+    'Corniche': {'nodes': ['N', 'J'], 'totalRunLength': 5},
+    'Boulevard Lauzes': {'nodes': ['D', 'H'], 'totalRunLength': 7},
+    'Trolles': {'nodes': ['P', 'G'], 'totalRunLength': 2},
+    'Ardoises': {'nodes': ['G', 'H'], 'totalRunLength': 3},
+    'Adrien Theaux': {'nodes': ['O', 'P', 'Q'], 'totalRunLength': 3},
+    'BlackOQ': {'nodes': ['O', 'Q'], 'totalRunLength': 9},
+    'Roc': {'nodes': ['R', 'J', 'K'], 'totalRunLength': 4},
+    'Dalles': {'nodes': ['H', 'S', 'T', 'U', 'V'], 'totalRunLength': 11},
+    'Christine': {'nodes': ['W', 'X'], 'totalRunLength': 17},
+    '2 Combes': {'nodes': ['S', 'X'], 'totalRunLength': 6},
+    'Combes de Thorens': {'nodes': ['X', 'Y', 'Z', 'V', 'K'], 'totalRunLength': 12},
+    'RedLC': {'nodes': ['L', 'C'], 'totalRunLength': 2},
+    'RedEF': {'nodes': ['E', 'F'], 'totalRunLength': 6},
+    'BlueTR': {'nodes': ['T', 'R'], 'totalRunLength': 4},
+    'GreenUJ': {'nodes': ['U', 'J'], 'totalRunLength': 4}
     }
 
 
     
-    startingPointNode = ['K']
+    startingPointNode = 'K'
 
     runsInput = ['Beranger','Christine','Croissant']
 
     #nodesInput = ['R', 'Y', 'O','Q']
     #allPermutations = PathFinder.GetAllPermutations(nodesInput)
 
-    selectedDefaultSkiRuns = []
+    #selectedDefaultSkiRuns = []
 
-    selectedDefaultSkiRuns = GetSelectedSkiRuns(runsInput)
+    selectedDefaultSkiRuns = GetSelectedSkiRuns(runsInput, defaultRuns)
+    #print("selected ski runs: ", selectedDefaultSkiRuns)
 
     selectedDefaultSkiRunsStartEndPairs = GetStartEndPairs(selectedDefaultSkiRuns)
+    #print("Selected ski run pairs:",selectedDefaultSkiRunsStartEndPairs)
 
+    selectedDefaultSkiRunsPermutations = PathFinder.GetAllPermutations(selectedDefaultSkiRunsStartEndPairs)
+    #print(selectedDefaultSkiRunsPermutations)
 
+    appendedStartNodeToEachPermutation = AppendStartNodeToPermutations(selectedDefaultSkiRunsPermutations, startingPointNode)
 
+    EndToStartPairs = []
 
-    # for runName, runNodes in defaultRuns.items():
-    #     print(runNodes)
-    #     runStartNode = runNodes[0]  
-    #     runEndNode = runNodes[-1]   
-    #     print(f"Run: {runName}, Start Node: {runStartNode}, End Node: {runEndNode}")
-
-
-
-
-
-    allPermutations = PathFinder.GetAllPermutations(runsInput)
-
-    allPermutationsWithStartingNode = []
-
-    for p in allPermutations:
-        permWithStartingNode = startingPointNode + list(p)
-        allPermutationsWithStartingNode.append(permWithStartingNode)
-        #print(permWithStartingNode)
+    
 
     shortestPathList = []
     shortestDisPathForEachPermDict = {}
-    shortestPathListForEachPermList =[]
-    
+    shortestPathListForEachPermList = []
     
 
-    for p in allPermutationsWithStartingNode:
-
-        total_distance = 0
+    for perm in appendedStartNodeToEachPermutation:
+        totalDistance = 0
         total_path = []
-        #print("--------------New perm_______________")
-        #print("-----",p,"------")
-        
-        for i in range(len(p) - 1):
-            pair = (p[i], p[i + 1])
+                                            #starting value of seq   |   length of list   |   increment
+        for i in range(0, len(perm), 2):    #range(0,          |        len(perm)       |     , 2)
+            
+            
+            
+            if i + 1 < len(perm):
+                pair = (perm[i], perm[i + 1])
+                EndToStartPairs.append(pair)
+
+                print("-----------------------Pair: " ,pair)
+                
+                #Do Astar from here
+                shortestPathForCurrentPermutation = PathFinder.AStar(nodeGraph, perm[i], perm[i + 1])
+                #print("Shorted path for current permutation:" , shortestPathForCurrentPermutation)
+
+                if shortestPathForCurrentPermutation is not None:
+                    distance = PathFinder.CalculateTotalDistance(shortestPathForCurrentPermutation, nodeGraph) #Calculates path distance for current pair in permutation
+
+                    shortestDistancePathForCurrentPermutationDict = {'distance': distance, 'path': shortestPathForCurrentPermutation}
+                    shortestPathList.append(shortestDistancePathForCurrentPermutationDict)
+
+
+                    total_path.append(shortestPathForCurrentPermutation)    #Total current path to each pair in the permutation  
+                    totalDistance += distance
+                    
+                
+                else:
+                    print("There is no path")
+
+                shortestDisPathForEachPermDict = {'distance': totalDistance, 'path': total_path}
+                shortestPathListForEachPermList.append(shortestDisPathForEachPermDict)
+
+            else:
+                #Add the last node after the Astar result TODO
+                EndToStartPairs.append(perm[i]) #only adds one node (maybe insert this as a seperate var?)  
+
+            
             
 
-            shortestDistancePathForCurrentPermutationDict = {}
 
-            start_node, end_node = pair #Assigns the start and end node to the new pair
+        
 
-            #print("IN")
-            #print(pair)
-            shortestPathForCurrentPermutation = PathFinder.AStar(nodeGraph, start_node, end_node)
-            #print(shortestPathForCurrentPermutation)
-            #print("OUT")
-
-            if shortestPathForCurrentPermutation is not None:
-                distance = PathFinder.CalculateTotalDistance(shortestPathForCurrentPermutation, nodeGraph) #Calculates path distance for current pair in permutation
-
-                shortestDistancePathForCurrentPermutationDict = {'distance': distance, 'path': shortestPathForCurrentPermutation}
-                shortestPathList.append(shortestDistancePathForCurrentPermutationDict)
-
-                total_distance += distance
-                total_path.append(shortestPathForCurrentPermutation)    #Total current path to each pair in the permutation
-
-
-
+        print("Total Distance: ", totalDistance, "| Total Path: ", total_path)
     
-        # Construct the dictionary
-        shortestDisPathForEachPermDict = {'distance': total_distance, 'path': total_path}
-        shortestPathListForEachPermList.append(shortestDisPathForEachPermDict)
-
-        print("Total Distance: ", total_distance, "| Total Path: ", total_path)
-
-    for key, value in shortestDisPathForEachPermDict.items():
-        print(key, ":", value)
+        for key, value in shortestDisPathForEachPermDict.items():
+            print(key, ":", value)
 
 
 
-min_distance = float('inf')
-min_path = None
+minDistance = float('inf')
+minPath = None
 
 # Iterate through each dictionary in the list
 for shortestDisPathForEachPermDict in shortestPathListForEachPermList:
@@ -183,10 +201,12 @@ for shortestDisPathForEachPermDict in shortestPathListForEachPermList:
     path = shortestDisPathForEachPermDict['path']
 
     # Compare distance with the current minimum distance
-    if distance < min_distance:
-        min_distance = distance 
-        min_path = path
+    if distance < minDistance:
+        minDistance = distance 
+        minPath = path
 print("--------------------------------------------------------------------")
-print("Smallest distance:", min_distance)
-print("Corresponding path:", min_path)
+print("Smallest distance:", minDistance)
+print("Corresponding path:", minPath)
 print("--------------------------------------------------------------------")
+    
+    
