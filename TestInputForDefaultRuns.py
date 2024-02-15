@@ -141,7 +141,7 @@ if __name__ == "__main__":
 
     for perm in appendedStartNodeToEachPermutation:
         totalDistance = 0
-        total_path = []
+        totalPath = []
                                             #starting value of seq   |   length of list   |   increment
         for i in range(0, len(perm), 2):    #range(0,          |        len(perm)       |     , 2)
             
@@ -164,14 +164,14 @@ if __name__ == "__main__":
                     shortestPathList.append(shortestDistancePathForCurrentPermutationDict)
 
 
-                    total_path.append(shortestPathForCurrentPermutation)    #Total current path to each pair in the permutation  
+                    totalPath.append(shortestPathForCurrentPermutation)    #Total current path to each pair in the permutation  
                     totalDistance += distance
                     
                 
                 else:
                     print("There is no path")
 
-                shortestDisPathForEachPermDict = {'distance': totalDistance, 'path': total_path}
+                shortestDisPathForEachPermDict = {'distance': totalDistance, 'path': totalPath}
                 shortestPathListForEachPermList.append(shortestDisPathForEachPermDict)
 
             else:
@@ -184,7 +184,7 @@ if __name__ == "__main__":
 
         
 
-        print("Total Distance: ", totalDistance, "| Total Path: ", total_path)
+        print("Total Distance: ", totalDistance, "| Total Path: ", totalPath)
     
         for key, value in shortestDisPathForEachPermDict.items():
             print(key, ":", value)
