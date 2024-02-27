@@ -56,8 +56,8 @@ def AStar(graph, start, end, weights):
 
         #If not then explore neighbours of currentNode
         for neighbouringNode, nodeData in graph[currentNode].items():
-            print(nodeData)
-            distance = Weighter(nodeData, weights)
+            weight = Weighter(nodeData, weights)
+            distance = current_cost + weight
 
             if distance < distances[neighbouringNode]:  # Check if the distance to the neighbouring node is shorter than the current known distance
                 distances[neighbouringNode] = distance  # Update the distance to the neighbouring node
