@@ -10,8 +10,9 @@ def weighter(edge: dict, weights: dict) -> dict:
     }
     returns the node weight as float
     """
-    weight = 1 # default weight
     weight = weights.get(edge.get("difficulty"))
+    if weight is None:
+        weight = 1
     weight = edge.get("duration") * edge.get("distance_prop") * weight
 
     return weight

@@ -200,7 +200,7 @@ def CreateNodesGraph(RunsLiftsNodesGraph):
         return edge
 
 
-    def get_matching_nodes(graph, connections, used_nodes, node_id):
+    def get_matching_nodes(graph, connections, node_id):
         for runlift in graph:
             runlift = list(runlift.values())[0]
 
@@ -208,7 +208,7 @@ def CreateNodesGraph(RunsLiftsNodesGraph):
             n_nodes = len(runlift)-1
             for node in runlift:
                 # matching point_id, not last element of run, and not already appended
-                if node.get("point_id") == node_id and position_counter < n_nodes and node.get("point_id") not in used_nodes:
+                if node.get("point_id") == node_id and position_counter < n_nodes: # and node.get("point_id") not in used_nodes
                     connections[runlift[position_counter+1].get("point_id")] = to_edge(node)
 
                 position_counter += 1
@@ -217,15 +217,14 @@ def CreateNodesGraph(RunsLiftsNodesGraph):
 
 
     NodesGraph = {}
-    used_nodes = []
 
     for RunLift in RunsLiftsNodesGraph:
         nodes = list(RunLift.values())[0]
         connections = {}
 
         for node in nodes:
-            connections = get_matching_nodes(RunsLiftsNodesGraph, connections, used_nodes, node.get("point_id"))
+            connections = get_matching_nodes(RunsLiftsNodesGraph, connections, node.get("point_id"))
             NodesGraph[node.get("point_id")] = connections
-            used_nodes.append(node.get("point_id"))
+            #used_nodes.append(node.get("point_id"))
 
     return NodesGraph

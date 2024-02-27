@@ -7,9 +7,10 @@ from shapely.geometry import Point, LineString
 from data_models import CreateBaseRunsLiftsGraph, GetConnections, CreateRunsLiftsGraph, CreateLocationGraph, CreateRunsLiftsNodesGraph, CreateNodesGraph
 
 dir = "/Users/sebastian/Documents/SkiNavApp/"
+dir_tmp = "/Users/sebastian/Documents/SkiNavApp_tmp/"
 
-gdf_runs = pd.read_pickle(dir+"runs_les_trois_vallee.pkl")
-gdf_lifts = pd.read_pickle(dir+"lifts_les_trois_vallee.pkl")
+gdf_runs = pd.read_pickle(dir_tmp+"runs_les_trois_vallee.pkl")
+gdf_lifts = pd.read_pickle(dir_tmp+"lifts_les_trois_vallee.pkl")
 
 # change to crs france UoM metric
 features = ["id", "name", "resort_name", "connection_type", "difficulty",
@@ -42,7 +43,7 @@ gdf_lifts = gdf_lifts[features]
 data = pd.concat([gdf_lifts, gdf_runs])
 
 # define subsample if intended
-data = data[~((data["name"].isin(["Stade"])) & (data.connection_type=="lift")) & (data.geometry.apply(lambda x: x.coords[0][1]) < -256000) & (data.geometry.apply(lambda x: x.coords[0][1]) > -260000) & (data.geometry.apply(lambda x: x.coords[0][0]) > 933000)]
+data = data[~((data["name"].isin(["Stade"])) & (data.connection_type=="lift")) & (data.geometry.apply(lambda x: x.coords[0][1]) < -257000) & (data.geometry.apply(lambda x: x.coords[0][1]) > -260000) & (data.geometry.apply(lambda x: x.coords[0][0]) > 933000)]
 data = data[~data.id.isin(["4c8d28e91232c0842a7ee27b6b688f83e36871c1", "8ca54533ba58833bb34bf182c41401bcc6ff564e"])]
 data.geometry.plot()
 
