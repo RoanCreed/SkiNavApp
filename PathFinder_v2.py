@@ -82,7 +82,6 @@ def CalculateTotalDistance(path, graph, weights):
         else:
             print(f"No direct edge between {currentNode} and {nextNode}.")  #Error if not
             return None
-    
     return totalDistance
 
 

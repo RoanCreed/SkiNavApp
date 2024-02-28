@@ -1,6 +1,11 @@
 import json
 import PathFinder_v2
 
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import geopandas as gpd
+
 file = open("NodesGraph.json")
 NodesGraph = json.load(file)
 
@@ -12,15 +17,15 @@ startingPointNode = '2bda5768-f82a-404f-a1e1-2ccde0832c9a' # funitel pecelt star
 
 #runsInput = ['Beranger','Christine','Croissant']
 #runsInput = ['0602c22d0ee93ab4320c45ce4d9d3cea5b49f867', 'f9214995594b42205bf550a2ea2433ae66a4dbd0', 'a0bb99c174db2bf009db1d1dbf8b918fe0a16b4a']
-runsInput = ['a0bb99c174db2bf009db1d1dbf8b918fe0a16b4a'] # croissant
-#runsInput = ['327610f1acb523e9c5c26e69b849fb180f9939b7', 'c7ca163eb881f3d186a5467f6f5be8a102a4f1d5'] #lac blanc and beranger
+#runsInput = ['a0bb99c174db2bf009db1d1dbf8b918fe0a16b4a'] # croissant
+runsInput = ['327610f1acb523e9c5c26e69b849fb180f9939b7', '0602c22d0ee93ab4320c45ce4d9d3cea5b49f867', 'a0bb99c174db2bf009db1d1dbf8b918fe0a16b4a'] #lac blanc and beranger, 
 
 weights = {
-        "lift": 3.5,
+        "lift": 1.4,
         "novice": 1,
-        "easy": 2,
-        "intermediate": 3,
-        "advanced": 4
+        "easy": 1.2,
+        "intermediate": 1.4,
+        "advanced": 1.6
     }
 
 
@@ -73,7 +78,7 @@ if __name__ == "__main__":
                 pair = (perm[i], perm[i + 1])
                 EndToStartPairs.append(pair)
 
-                print("-----------------------Pair: " ,pair)
+                print("-----------------------Pair: ", pair)
                     
                 #Do Astar from here
                 shortestPathForCurrentPermutation = PathFinder_v2.AStar(NodesGraph, perm[i], perm[i + 1], weights)
@@ -94,7 +99,7 @@ if __name__ == "__main__":
                     print("There is no path")
 
                 shortestDisPathForEachPermDict = {'distance': totalDistance, 'path': totalPath}
-                shortestPathListForEachPermList.append(shortestDisPathForEachPermDict)
+                
 
             else:
                 #Add the last node after the Astar result TODO
@@ -102,26 +107,64 @@ if __name__ == "__main__":
 
                 
         print("Total Distance: ", totalDistance, "| Total Path: ", totalPath)
+        shortestPathListForEachPermList.append(shortestDisPathForEachPermDict)
         
         for key, value in shortestDisPathForEachPermDict.items():
             print(key, ":", value)
 
 
-    minDistance = float('inf')
-    minPath = None
+minDistance = float('inf')
+minPath = None
 
 
-    # Iterate through each dictionary in the list
-    for shortestDisPathForEachPermDict in shortestPathListForEachPermList:
+# Iterate through each dictionary in the list
+for shortestDisPathForEachPermDict in shortestPathListForEachPermList:
 
-        distance = shortestDisPathForEachPermDict['distance']
-        path = shortestDisPathForEachPermDict['path']
+    distance = shortestDisPathForEachPermDict['distance']
+    path = shortestDisPathForEachPermDict['path']
 
-        # Compare distance with the current minimum distance
-        if distance < minDistance:
-            minDistance = distance 
-            minPath = path
-    print("--------------------------------------------------------------------")
-    print("Smallest distance:", minDistance)
-    print("Corresponding path:", minPath)
-    print("--------------------------------------------------------------------")
+    # Compare distance with the current minimum distance
+    if distance < minDistance:
+        minDistance = distance 
+        minPath = path
+print("--------------------------------------------------------------------")
+print("Smallest distance:", minDistance)
+print("Corresponding path:", minPath)
+print("--------------------------------------------------------------------")
+
+
+
+# plot visited nodes
+file = open("LocationGraph.json")
+LocationGraph = json.load(file)
+
+runsliftmap = pd.read_pickle("/Users/sebastian/Documents/SkiNavApp/runsliftmap.pkl")
+
+def plot_visited_nodes(runsliftmap, runsInput, minPath, idx_nodes_start=None, idx_nodes_end=None):
+    """
+    runsliftmap: dataframe with all the runs as linestrings
+    runsInput: selected runs
+    minPath: shortes path found by Astar
+    idx_nodes_start: the index of the first node that should be annotate on the map
+    idx_nodes_end: the index of the last node that should be annotate on the map
+    """
+    if idx_nodes_start is None:
+        idx_nodes_start = 0 
+    if idx_nodes_end is None:
+        idx_nodes_end = len(sum(minPath, []))
+
+    visited_nodes = []
+    for node in sum(minPath, []):
+        visited_nodes.append(tuple(LocationGraph.get(node)))
+    visited_nodes = np.asarray(visited_nodes)
+    nodes_data = gpd.GeoDataFrame(visited_nodes, geometry=gpd.points_from_xy(visited_nodes[:,0], visited_nodes[:,1])).reset_index()
+    
+    fig, ax = plt.subplots(figsize=(12,14))
+    runsliftmap.plot(ax=ax)
+    runsliftmap[runsliftmap.id.isin(runsInput)].plot(ax=ax, color="lightgreen")
+    nodes_data.geometry.plot(ax=ax, color="red")
+    nodes_data.iloc[idx_nodes_start:idx_nodes_end].apply(lambda x: ax.annotate(text=x['index'], xy=x.geometry.centroid.coords[0], ha='right', size=8), axis=1)
+    plt.show()
+
+
+plot_visited_nodes(runsliftmap, runsInput, minPath, 0, 10) # change to number of nodes that should be annotated
