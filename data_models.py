@@ -122,7 +122,7 @@ def CreateLocationGraph(RunsLiftsGraph):
         points = list(run.values())[0]
         for point in points:
             point_wgs = transform(project.transform, point.get("point_coord"))
-            LocationGraph[point.get("point_id")] = (point_wgs.coords[0][0], point_wgs.coords[0][1], point_wgs.coords[0][2])
+            LocationGraph[point.get("point_id")] = (point_wgs.coords[0][1], point_wgs.coords[0][0], point_wgs.coords[0][2])
 
     return LocationGraph
 
