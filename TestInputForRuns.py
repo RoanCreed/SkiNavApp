@@ -159,7 +159,7 @@ def plot_visited_nodes(runsliftmap, runsInput, minPath, idx_nodes_start=None, id
     visited_nodes = np.asarray(visited_nodes)
     nodes_data = gpd.GeoDataFrame(visited_nodes, geometry=gpd.points_from_xy(visited_nodes[:,1], visited_nodes[:,0])).reset_index()
     
-    fig, ax = plt.subplots(figsize=(12,14))
+    fig, ax = plt.subplots(figsize=(10,8))
     runsliftmap.plot(ax=ax)
     runsliftmap[runsliftmap.id.isin(runsInput)].plot(ax=ax, color="lightgreen")
     nodes_data.geometry.plot(ax=ax, color="red")
