@@ -6,10 +6,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 import geopandas as gpd
 
-file = open("NodesGraph.json")
+file = open("DataGraphs/NodesGraph.json")
 NodesGraph = json.load(file)
 
-file = open("RunsLiftsGraph.json")
+file = open("DataGraphs/RunsLiftsGraph.json")
 RunsLiftsGraph = json.load(file)
 
 #startingPointNode = 'f4946711-6818-4375-96ef-e487b025c61c' # lac blanc lift
