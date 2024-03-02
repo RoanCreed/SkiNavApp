@@ -13,12 +13,12 @@ file = open("DataGraphs/RunsLiftsGraph.json")
 RunsLiftsGraph = json.load(file)
 
 #startingPointNode = 'f4946711-6818-4375-96ef-e487b025c61c' # lac blanc lift
-startingPointNode = '2bda5768-f82a-404f-a1e1-2ccde0832c9a' # funitel pecelt start
+startingPointNode = '7fb7df9e-a8b1-4013-8904-6e2e3777ca60' # funitel pecelt start
 
 #runsInput = ['Beranger','Christine','Croissant']
 #runsInput = ['0602c22d0ee93ab4320c45ce4d9d3cea5b49f867', 'f9214995594b42205bf550a2ea2433ae66a4dbd0', 'a0bb99c174db2bf009db1d1dbf8b918fe0a16b4a']
 #runsInput = ['a0bb99c174db2bf009db1d1dbf8b918fe0a16b4a'] # croissant
-runsInput = ['327610f1acb523e9c5c26e69b849fb180f9939b7', '0602c22d0ee93ab4320c45ce4d9d3cea5b49f867', 'a0bb99c174db2bf009db1d1dbf8b918fe0a16b4a'] #lac blanc and beranger, 
+runsInput = ['327610f1acb523e9c5c26e69b849fb180f9939b7', '0602c22d0ee93ab4320c45ce4d9d3cea5b49f867', 'a0bb99c174db2bf009db1d1dbf8b918fe0a16b4a'] #lac blanc and beranger, croissant
 
 weights = {
         "lift": 1.4,
@@ -135,10 +135,10 @@ print("--------------------------------------------------------------------")
 
 
 # plot visited nodes
-file = open("LocationGraph.json")
+file = open("DataGraphs/LocationGraph.json")
 LocationGraph = json.load(file)
 
-runsliftmap = pd.read_pickle("/Users/sebastian/Documents/SkiNavApp/runsliftmap.pkl")
+runsliftmap = pd.read_pickle("runsliftmap.pkl")
 
 def plot_visited_nodes(runsliftmap, runsInput, minPath, idx_nodes_start=None, idx_nodes_end=None):
     """
@@ -157,7 +157,7 @@ def plot_visited_nodes(runsliftmap, runsInput, minPath, idx_nodes_start=None, id
     for node in sum(minPath, []):
         visited_nodes.append(tuple(LocationGraph.get(node)))
     visited_nodes = np.asarray(visited_nodes)
-    nodes_data = gpd.GeoDataFrame(visited_nodes, geometry=gpd.points_from_xy(visited_nodes[:,0], visited_nodes[:,1])).reset_index()
+    nodes_data = gpd.GeoDataFrame(visited_nodes, geometry=gpd.points_from_xy(visited_nodes[:,1], visited_nodes[:,0])).reset_index()
     
     fig, ax = plt.subplots(figsize=(12,14))
     runsliftmap.plot(ax=ax)
@@ -167,4 +167,4 @@ def plot_visited_nodes(runsliftmap, runsInput, minPath, idx_nodes_start=None, id
     plt.show()
 
 
-plot_visited_nodes(runsliftmap, runsInput, minPath, 0, 10) # change to number of nodes that should be annotated
+plot_visited_nodes(runsliftmap, runsInput, minPath, 0, 20) # change to number of nodes that should be annotated
