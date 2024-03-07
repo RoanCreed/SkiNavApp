@@ -53,7 +53,7 @@ def GetConnections(RunsLiftsGraph, start_end_points):
 
     buffer_zone = 2
 
-    for run_id, point_id_se, point_type_se, coords_se, difficulty_se, duration_se, connection_type_se, name_se in list(zip(start_end_points.run_id, start_end_points.point_id ,start_end_points.point_type, start_end_points.geometry, start_end_points.difficulty, start_end_points.duration, start_end_points.connection_type, start_end_points["name"])):
+    for run_id, point_id_se, point_type_se, coords_se, difficulty_se, duration_se, connection_type_se, name_se in list(zip(start_end_points.run_id, start_end_points.point_id, start_end_points.point_type, start_end_points.geometry, start_end_points.difficulty, start_end_points.duration, start_end_points.connection_type, start_end_points["name"])):
         matching_runs = []
         connected_runs = []
         for RunLift in RunsLiftsGraph:
@@ -122,7 +122,7 @@ def CreateLocationGraph(RunsLiftsGraph):
         points = list(run.values())[0]
         for point in points:
             point_wgs = transform(project.transform, point.get("point_coord"))
-            LocationGraph[point.get("point_id")] = (point_wgs.coords[0][1], point_wgs.coords[0][0], point_wgs.coords[0][2])
+            LocationGraph[point.get("point_id")] = (point_wgs.coords[0][1], point_wgs.coords[0][0], point_wgs.coords[0][2]) # lat, long
 
     return LocationGraph
 
@@ -220,9 +220,9 @@ def CreateNodesGraph(RunsLiftsNodesGraph):
 
     for RunLift in RunsLiftsNodesGraph:
         nodes = list(RunLift.values())[0]
-        connections = {}
 
         for node in nodes:
+            connections = {}
             connections = get_matching_nodes(RunsLiftsNodesGraph, connections, node.get("point_id"))
             NodesGraph[node.get("point_id")] = connections
             #used_nodes.append(node.get("point_id"))

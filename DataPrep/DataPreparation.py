@@ -86,13 +86,13 @@ RunsLiftsNodesGraph = CreateRunsLiftsNodesGraph(RunsLiftsGraph_tmp)
 NodesGraph = CreateNodesGraph(RunsLiftsNodesGraph)
 
 
-with open ("RunsLiftsGraph.json", "w", encoding="utf8") as json_file:
+with open ("DataGraphs/RunsLiftsGraph.json", "w", encoding="utf8") as json_file:
     json_file.write(json.dumps(RunsLiftsGraph, ensure_ascii=False))
 
-with open ("LocationGraph.json", "w", encoding="utf8") as json_file:
+with open ("DataGraphs/LocationGraph.json", "w", encoding="utf8") as json_file:
     json_file.write(json.dumps(LocationGraph, ensure_ascii=False))
 
-with open ("NodesGraph.json", "w", encoding="utf8") as json_file:
+with open ("DataGraphs/NodesGraph.json", "w", encoding="utf8") as json_file:
     json_file.write(json.dumps(NodesGraph, ensure_ascii=False))
 
 print("SUCCESS")

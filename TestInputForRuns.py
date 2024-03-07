@@ -13,7 +13,7 @@ file = open("DataGraphs/RunsLiftsGraph.json")
 RunsLiftsGraph = json.load(file)
 
 #startingPointNode = 'f4946711-6818-4375-96ef-e487b025c61c' # lac blanc lift
-startingPointNode = '7fb7df9e-a8b1-4013-8904-6e2e3777ca60' # funitel pecelt start
+startingPointNode = '76aa1422-5227-439e-ac0d-23d3bb128b7b' # funitel pecelt start
 
 #runsInput = ['Beranger','Christine','Croissant']
 #runsInput = ['0602c22d0ee93ab4320c45ce4d9d3cea5b49f867', 'f9214995594b42205bf550a2ea2433ae66a4dbd0', 'a0bb99c174db2bf009db1d1dbf8b918fe0a16b4a']
@@ -167,4 +167,4 @@ def plot_visited_nodes(runsliftmap, runsInput, minPath, idx_nodes_start=None, id
     plt.show()
 
 
-plot_visited_nodes(runsliftmap, runsInput, minPath, 0, 20) # change to number of nodes that should be annotated
+plot_visited_nodes(runsliftmap, runsInput, minPath, 0, ) # change to number of nodes that should be annotated
