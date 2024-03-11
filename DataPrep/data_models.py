@@ -90,41 +90,42 @@ def GetConnections(RunsLiftsGraph, start_end_points):
     return RunsLiftsGraph
 
 
-def CreateRunsLiftsGraph(RunsLiftsGraph): 
-    RunsLiftsGraph_tmp = {}
+def CreateRunsLiftsGraph(RunsLiftsGraph):
+    RunsLiftsGraph_tmp = {"type": "FeatureCollection"}
+    features = []
 
-    for run in RunsLiftsGraph:
-        runlift = {}
-        point_ids = []
-        run_id = list(run.keys())[0]
-        points = list(run.values())[0]
-        for point in points:
-            point_ids.append(point.get("point_id"))
-
-        runlift["run_name"] = points[0].get("run_name")
-        runlift["connection_type"] = points[0].get("connection_type")
-        runlift["difficulty"] = points[0].get("difficulty")
-        runlift["duration"] = points[0].get("duration")
-        runlift["point_ids"] = point_ids
-
-        RunsLiftsGraph_tmp[run_id] = runlift
-
-    return RunsLiftsGraph_tmp
-
-
-def CreateLocationGraph(RunsLiftsGraph):
-    LocationGraph = {}
     project = pyproj.Transformer.from_proj(
         pyproj.Proj(init='epsg:27561'), # source
         pyproj.Proj(init='epsg:4326')) # destination
 
     for run in RunsLiftsGraph:
+        feature = {"type": "Feature"}
+        properties = {}
+        geometry = {"type": "LineString"}
+        coordinates = []
+        point_ids = []
+        run_id = list(run.keys())[0]
         points = list(run.values())[0]
         for point in points:
-            point_wgs = transform(project.transform, point.get("point_coord"))
-            LocationGraph[point.get("point_id")] = (point_wgs.coords[0][1], point_wgs.coords[0][0], point_wgs.coords[0][2]) # lat, long
+            coords_wgs = transform(project.transform, point.get("point_coord"))
+            coordinates.append([coords_wgs.coords[0][1], coords_wgs.coords[0][0], coords_wgs.coords[0][2]])
+            point_ids.append(point.get("point_id"))
 
-    return LocationGraph
+        geometry["coordinates"] = coordinates
+        properties["run_id"] = run_id
+        properties["run_name"] = points[0].get("run_name")
+        properties["connection_type"] = points[0].get("connection_type")
+        properties["difficulty"] = points[0].get("difficulty")
+        properties["duration"] = points[0].get("duration")
+        properties["point_id"] = point_ids
+        feature["properties"] = properties
+        feature["geometry"] = geometry
+
+        features.append(feature)
+
+    RunsLiftsGraph_tmp["features"] = features
+
+    return RunsLiftsGraph_tmp
 
 
 def CreateRunsLiftsNodesGraph(RunsLiftsGraph):

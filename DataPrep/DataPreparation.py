@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 import geopandas as gpd
 from shapely.geometry import Point, LineString
-from data_models import CreateBaseRunsLiftsGraph, GetConnections, CreateRunsLiftsGraph, CreateLocationGraph, CreateRunsLiftsNodesGraph, CreateNodesGraph
+from data_models import CreateBaseRunsLiftsGraph, GetConnections, CreateRunsLiftsGraph, CreateRunsLiftsNodesGraph, CreateNodesGraph
 
 dir = "/Users/sebastian/Documents/SkiNavApp/"
 dir_tmp = "/Users/sebastian/Documents/SkiNavApp_tmp/"
@@ -77,7 +77,7 @@ RunsLiftsGraph_tmp = GetConnections(RunsLiftsGraph, start_end_points)
 RunsLiftsGraph = CreateRunsLiftsGraph(RunsLiftsGraph_tmp)
 
 # create LocationGraph
-LocationGraph = CreateLocationGraph(RunsLiftsGraph_tmp)
+#LocationGraph = CreateLocationGraph(RunsLiftsGraph_tmp)
 
 # iterate through RunLifts, calculate segment length and keep nodes, start and end points
 RunsLiftsNodesGraph = CreateRunsLiftsNodesGraph(RunsLiftsGraph_tmp)
@@ -89,8 +89,8 @@ NodesGraph = CreateNodesGraph(RunsLiftsNodesGraph)
 with open ("DataGraphs/RunsLiftsGraph.json", "w", encoding="utf8") as json_file:
     json_file.write(json.dumps(RunsLiftsGraph, ensure_ascii=False))
 
-with open ("DataGraphs/LocationGraph.json", "w", encoding="utf8") as json_file:
-    json_file.write(json.dumps(LocationGraph, ensure_ascii=False))
+#with open ("DataGraphs/LocationGraph.json", "w", encoding="utf8") as json_file:
+#    json_file.write(json.dumps(LocationGraph, ensure_ascii=False))
 
 with open ("DataGraphs/NodesGraph.json", "w", encoding="utf8") as json_file:
     json_file.write(json.dumps(NodesGraph, ensure_ascii=False))
